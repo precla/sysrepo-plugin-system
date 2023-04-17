@@ -9,17 +9,67 @@ namespace ietf::sys::dns {
 /**
  * @brief DNS server.
  */
-struct DnsServer {
-    std::string Name; ///< Arbitrary name of the DNS server.
-    std::string Address; ///< Address of the DNS server.
-    std::uint16_t Port; ///< Port of the DNS server.
+class DnsServer {
+    private:
+        std::string Name; ///< Arbitrary name of the DNS server.
+        std::string Address; ///< Address of the DNS server.
+        std::uint16_t Port; ///< Port of the DNS server.
 
-    using List = std::vector<DnsServer>;
+        using List = std::vector<DnsServer>;
+
+    public:
+
 
     /**
      * @brief Default constructor.
      */
     DnsServer();
+
+    /**
+     * @brief Constructor with all params.
+     */
+    DnsServer(std::string name, std::string address, std::uint16_t port);
+
+    /**
+     * @brief Clear Dns Server, set port to 53, address NULL and port 0
+     */
+    void clear();
+
+    /**
+     * @brief Set Name of Dns Server
+     */
+    void setName(const std::string name);
+
+    /**
+     * @brief Set Address of Dns Server
+     */
+    void setAddress(const std::string address);
+
+    /**
+     * @brief Set Address of Dns Server
+     */
+    void setPort(const std::uint16_t port);
+
+    /**
+     * @brief Get Name of Dns Server
+     */
+    std::string getName();
+
+    /**
+     * @brief Get Address of Dns Server
+     */
+    std::string getAddress();
+
+    /**
+     * @brief Get Port of Dns Server
+     */
+    std::uint16_t getPort();
+
+    /**
+     * @brief Destruct DnsServer object
+     */
+    void close();
+
 
     /**
      * @brief Get the list of DNS servers.
