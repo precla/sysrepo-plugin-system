@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <optional>
 
 namespace ietf::sys::dns {
 
@@ -31,7 +32,7 @@ class DnsServer {
     DnsServer(std::string name, std::string address, std::uint16_t port);
 
     /**
-     * @brief Clear Dns Server, set port to 53, address NULL and port 0
+     * @brief Clear Dns Server
      */
     void clear();
 
@@ -66,12 +67,6 @@ class DnsServer {
     std::uint16_t getPort();
 
     /**
-     * @brief Destruct DnsServer object
-     */
-    void close();
-
-
-    /**
      * @brief Get the list of DNS servers.
      * @return List of DNS servers.
      */
@@ -79,19 +74,137 @@ class DnsServer {
 };
 
 /**
- * @brief DNS search element type alias.
+ * @brief DnsSearchServer class
  */
-using DnsSearch = std::string;
+class DnsSearchServer{
 
-/**
- * @brief DNS search list type alias.
- */
-using DnsSearchList = std::vector<DnsSearch>;
+    private:
+        std::string Domain;
+        int Ifindex;
+        int Search;
+    public:
+        /**
+        * @brief Default constructor
+        */
+        DnsSearchServer();
 
-/**
- * @brief Get the list of DNS search domains.
- * @return List of DNS search domains.
- */
-DnsSearchList getSearchList();
+        /**
+        * @brief Constructor with all parameters
+        */
+        DnsSearchServer(std::string domain, int ifindex, int search);
+
+        /**
+        * @brief Clear DnsSearchServer
+        */
+        void clear();
+
+        /**
+        * @brief Set DnsSearchServer Domain
+        */
+        void setDomain(std::string domain);
+
+        /**
+        * @brief Set DnsSearchServer Ifindex
+        */
+        void setIfindex(int ifindex);
+
+        /**
+        * @brief Set DnsSearchServer search
+        */
+        void setSearch(int search);
+
+
+        /**
+        * @brief Get DnsSearchServer Domain
+        */
+        std::string getDomain();
+
+        /**
+        * @brief Get DnsSearchServer Ifindex
+        */
+        int getIfindex();
+
+        /**
+        * @brief Get DnsSearchServer Search
+        */
+        int getSearch();
+
+        /**
+        * @brief Overloaded == operator
+        * @details It compares them by the Domain
+        */
+        bool operator==(const DnsSearchServer& other) const;
+
+        /**
+        * @brief Overloaded != operator
+        * @details It compares them by the Domain
+        */
+        bool operator!=(const DnsSearchServer& other) const;
+
+};
+
+class DnsSearchServerList {
+
+    private:
+        /**
+        * @brief Private Constructor forbids instantiating new object
+        */
+        DnsSearchServerList();
+
+        /**
+        * @brief Static DnsSearchServer vector
+        */
+        static std::vector<DnsSearchServer> servers;
+
+    public:
+        /**
+        * @brief Clear DnsSearchServer list
+        */
+        void clearList();
+
+        /**
+        * @brief Add DnsSearchServer to the list
+        */
+        bool addDnsSearchServer(const DnsSearchServer& srv);
+
+        /**
+        * @brief Find DnsSearchServer by Name
+        * @return std::optional<DnsSearchServer>
+        * @details Returns std::nullopt if object is not found
+        */
+        std::optional<DnsSearchServer> findDnsSearchServer(const std::string& name);
+
+        /**
+        * @brief Remove DnsSearchServer
+        * @param name of DnsSearchServer
+        * @return true if removed, false otherwise
+        */
+        bool removeDnsSearchServer(const std::string& name);
+
+        /**
+        * @brief Compare DnsSearchServer
+        * @param s1,s2 Compares 2 DnsSearchServers
+        * @return true if are the same, false otherwise
+        */
+        bool compareDnsSearchServer(const DnsSearchServer& s1, const DnsSearchServer& s2);  
+       
+
+};
+
+// /**
+//  * @brief DNS search element type alias.
+//  */
+// using DnsSearch = std::string;
+
+// /**
+//  * @brief DNS search list type alias.
+//  */
+// using DnsSearchList = std::vector<DnsSearch>;
+
+// /**
+//  * @brief Get the list of DNS search domains.
+//  * @return List of DNS search domains.
+//  */
+// DnsSearchList getSearchList();
 
 }
