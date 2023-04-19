@@ -66,11 +66,25 @@ class DnsServer {
      */
     std::uint16_t getPort();
 
+    // /**
+    //  * @brief Get the list of DNS servers.
+    //  * @return List of DNS servers.
+    //  */
+    // static DnsServer::List getServers();
+
     /**
-     * @brief Get the list of DNS servers.
-     * @return List of DNS servers.
-     */
-    static DnsServer::List getServers();
+    * @brief Overloaded == operator
+    * @details It compares them by the Name
+    */
+    bool operator==(const DnsServer& other) const;
+
+    /**
+    * @brief Overloaded != operator
+    * @details It compares them by the Name
+    */
+    bool operator!=(const DnsServer& other) const;
+
+
 };
 
 /**
@@ -143,6 +157,12 @@ class DnsSearchServer{
 
 };
 
+
+/**
+* @brief DnsSearchServerList class
+* @details Static class for storring DnsSearchServer objects
+*/
+
 class DnsSearchServerList {
 
     private:
@@ -168,18 +188,18 @@ class DnsSearchServerList {
         bool addDnsSearchServer(const DnsSearchServer& srv);
 
         /**
-        * @brief Find DnsSearchServer by Name
+        * @brief Find DnsSearchServer by Domain
         * @return std::optional<DnsSearchServer>
         * @details Returns std::nullopt if object is not found
         */
-        std::optional<DnsSearchServer> findDnsSearchServer(const std::string& name);
+        std::optional<DnsSearchServer> findDnsSearchServer(const std::string& domain);
 
         /**
         * @brief Remove DnsSearchServer
         * @param name of DnsSearchServer
         * @return true if removed, false otherwise
         */
-        bool removeDnsSearchServer(const std::string& name);
+        bool removeDnsSearchServer(const std::string& domain);
 
         /**
         * @brief Compare DnsSearchServer
@@ -191,20 +211,53 @@ class DnsSearchServerList {
 
 };
 
-// /**
-//  * @brief DNS search element type alias.
-//  */
-// using DnsSearch = std::string;
+class DnsServerList {
 
-// /**
-//  * @brief DNS search list type alias.
-//  */
-// using DnsSearchList = std::vector<DnsSearch>;
+    private:
+        /**
+        * @brief Private Constructor forbids instantiating new object
+        */
+        DnsServerList();
 
-// /**
-//  * @brief Get the list of DNS search domains.
-//  * @return List of DNS search domains.
-//  */
-// DnsSearchList getSearchList();
+        /**
+        * @brief Static DnsServer vector
+        */
+        static std::vector<DnsServer> servers;
+
+    public:
+        /**
+        * @brief Clear DnsServer list
+        */
+        void clearList();
+
+        /**
+        * @brief Add DnsServer to the list
+        */
+        bool addDnsServer(const DnsServer& srv);
+
+        /**
+        * @brief Find DnsServer by Name
+        * @return std::optional<DnsServer>
+        * @details Returns std::nullopt if object is not found
+        */
+        std::optional<DnsServer> findDnsServer(const std::string& name);
+
+        /**
+        * @brief Remove DnsServer
+        * @param name of DnsServer
+        * @return true if removed, false otherwise
+        */
+        bool removeDnsServer(const std::string& name);
+
+        /**
+        * @brief Compare DnsServer
+        * @param s1,s2 Compares 2 DnsServers
+        * @return true if are the same, false otherwise
+        */
+        bool compareDnsServer(const DnsServer& s1, const DnsServer& s2);  
+       
+
+};
+
 
 }

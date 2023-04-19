@@ -44,6 +44,15 @@ std::string DnsServer::getAddress(){
     return Address;
 }
 
+bool DnsServer::operator==(const DnsServer& other) const {
+     return (this->Name == other.Name);
+}
+
+bool DnsServer::operator!=(const DnsServer& other) const { 
+    return (this->Name == other.Name); 
+}
+
+
 DnsSearchServer::DnsSearchServer() 
     :   Ifindex{0},
         Search{0}{
@@ -67,6 +76,8 @@ int DnsSearchServer::getIfindex(){
 int DnsSearchServer::getSearch(){
     return Search;
 }
+
+//implementation of DnsSearchServer
 
 void DnsSearchServer::setDomain(std::string domain){
     this->Domain = domain;
@@ -108,10 +119,10 @@ bool DnsSearchServerList::addDnsSearchServer(const DnsSearchServer& srv){
     return true;
 }
 
-std::optional<DnsSearchServer> DnsSearchServerList::findDnsSearchServer(const std::string& name){
+std::optional<DnsSearchServer> DnsSearchServerList::findDnsSearchServer(const std::string& domain){
 
     for(DnsSearchServer& server : servers){
-        if(server.getDomain() == name){
+        if(server.getDomain() == domain){
             return server;
         }
     }
@@ -119,12 +130,12 @@ std::optional<DnsSearchServer> DnsSearchServerList::findDnsSearchServer(const st
     return std::nullopt;
 }
 
-bool DnsSearchServerList::removeDnsSearchServer(const std::string& name){
+bool DnsSearchServerList::removeDnsSearchServer(const std::string& domain){
 
     std::vector<DnsSearchServer>::iterator it = servers.begin();
 
     for(it; it != servers.end(); it++){
-        if(it->getDomain() == name){
+        if(it->getDomain() == domain){
             servers.erase(it);
             return true;
         }
@@ -138,19 +149,55 @@ bool DnsSearchServerList::compareDnsSearchServer(const DnsSearchServer& s1, cons
     return (s1 == s2);
 }
 
+std::vector<DnsServer> DnsServerList::servers;
+
+void DnsServerList::clearList(){
+    servers.clear();
+}
+
+bool DnsServerList::addDnsServer(const DnsServer& srv){
+    for (DnsServer& server : servers){
+        if(server == srv){
+            //already exists
+            return false;
+        }
+    }
+
+    servers.push_back(srv);
+    return true;
+}
+
+std::optional<DnsServer> DnsServerList::findDnsServer(const std::string& name){
+
+    for(DnsServer& server : servers){
+        if(server.getName() == name){
+            return server;
+        }
+    }
+    
+    return std::nullopt;
+}
+
+bool DnsServerList::removeDnsServer(const std::string& name){
+
+    std::vector<DnsServer>::iterator it = servers.begin();
+
+    for(it; it != servers.end(); it++){
+        if(it->getName() == name){
+            servers.erase(it);
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
+bool DnsServerList::compareDnsServer(const DnsServer& s1, const DnsServer& s2){
+    return (s1 == s2);
 }
 
 
+}// end of namespace
 
-
-
-// /**
-//  * @brief Get the list of DNS search domains.
-//  * @return List of DNS search domains.
-//  */
-// DnsSearchList getSearchList()
-// {
-//     DnsSearchList search_list;
-//     return search_list;
-// }
 
