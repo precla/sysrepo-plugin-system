@@ -26,7 +26,7 @@ find_package(LIBYANGCPP REQUIRED)
 find_package(SYSREPO REQUIRED)
 find_package(LIBYANG REQUIRED)
 find_package(UMGMT REQUIRED)
-find_package(sdbus-c++ REQUIRED)
+find_package(SYSTEMD)
 
 include_directories(
     ${SYSREPOCPP_INCLUDE_DIRS}
@@ -127,6 +127,7 @@ target_link_libraries(
     ${SYSREPOCPP_LIBRARIES}
     ${LIBYANGCPP_LIBRARIES}
     ${UMGMT_LIBRARIES}
+    ${SYSTEMDCPP_LIBRARIES}
 )
 
 # plugin as a library
@@ -140,10 +141,10 @@ target_link_libraries(
     ${PLUGIN_LIRBARY_NAME}
 
     ${PLUGIN_CORE_LIBRARY_NAME}
-
     ${SYSREPO_LIBRARIES}
     ${LIBYANG_LIBRARIES}
     ${SYSREPOCPP_LIBRARIES}
     ${LIBYANGCPP_LIBRARIES}
     ${UMGMT_LIBRARIES}
+    ${SYSTEMDCPP_LIBRARIES}
 )
