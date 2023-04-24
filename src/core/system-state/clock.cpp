@@ -5,6 +5,7 @@
 
 #include <sys/sysinfo.h>
 #include <sys/utsname.h>
+#include <ctime>
 
 namespace ietf::sys::state {
 /**
