@@ -149,8 +149,9 @@ void registerModuleChangeSubscriptions(sr::Session& sess, ietf::sys::PluginConte
 {
     const auto change_callbacks = {
         ModuleChangeCallback { "/ietf-system:system/hostname", ietf::sys::sub::change::HostnameModuleChangeCb(ctx.getModuleChangeContext()) },
-        ModuleChangeCallback {
-            "/ietf-system:system/clock/timezone-name", ietf::sys::sub::change::ClockTimezoneNameModuleChangeCb(ctx.getModuleChangeContext()) },
+        ModuleChangeCallback { "/ietf-system:system/clock/timezone-name", ietf::sys::sub::change::ClockTimezoneNameModuleChangeCb(ctx.getModuleChangeContext()) },
+        ModuleChangeCallback { "/ietf-system:system/dns-resolver/search", ietf::sys::sub::change::DnsSearchModuleChangeCb(ctx.getModuleChangeContext()) },
+
     };
 
     auto& sub_handle = ctx.getSubscriptionHandle();

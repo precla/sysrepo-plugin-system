@@ -1,6 +1,6 @@
 #include "dns.hpp"
-#include "sdbus-c++/Message.h"
 #include <sdbus-c++/sdbus-c++.h>
+#include <sysrepo.h>
 
 namespace ietf::sys::dns {
 
@@ -101,6 +101,13 @@ bool DnsSearchServer::operator!=(const DnsSearchServer& other) const {
 
 // DnsSearchServerList implementation
 
+DnsSearchServerList& DnsSearchServerList::getInstance(){
+    static DnsSearchServerList list;
+    return list;
+}
+
+DnsSearchServerList::DnsSearchServerList(){};
+
 std::vector<DnsSearchServer> DnsSearchServerList::servers;
 
 void DnsSearchServerList::clearList(){
@@ -197,6 +204,92 @@ bool DnsServerList::compareDnsServer(const DnsServer& s1, const DnsServer& s2){
     return (s1 == s2);
 }
 
+//standalone functions
+// #define SYSTEMD 
+// #define SYSTEMD_IFINDEX 1
+int changeSearchServer(DnsSearchServer searchServer){
+
+    auto bus = sdbus::createSystemBusConnection();
+    
+
+//     int error = 0;
+
+//     const char* dns_domain = searchServer.getDomain().c_str();
+//     const int search_type = searchServer.getSearch();
+
+//     #ifdef SYSTEMD
+//         int r = 0;
+//         sd_bus_error sdb_err = SD_BUS_ERROR_NULL;
+// 	    sd_bus_message *msg = nullptr;
+// 	    sd_bus_message *reply = nullptr;
+// 	    sd_bus *bus = nullptr;
+
+//        r = sd_bus_open_system(&bus);
+// 	if (r < 0) {
+// 		// SRPLG_LOG_ERR(PLUGIN_NAME, "Failed to open system bus: %s\n", strerror(-r));
+// 		goto invalid;
+// 	}
+
+//     r = sd_bus_message_new_method_call(
+// 		bus,
+// 		&msg,
+// 		"org.freedesktop.resolve1",
+// 		"/org/freedesktop/resolve1",
+// 		"org.freedesktop.resolve1.Manager",
+// 		"SetLinkDomains");
+// 	if (r < 0) {
+// 		goto invalid;
+// 	}
+
+//     // set ifindex to the first value in the list
+// 	r = sd_bus_message_append(msg, "i", SYSTEMD_IFINDEX);
+// 	if (r < 0) {
+// 		// SRPLG_LOG_ERR(PLUGIN_NAME, "sd_bus_message_append() error");
+// 		goto invalid;
+// 	}
+
+//     r = sd_bus_message_open_container(msg, 'a', "(sb)");
+// 	if (r < 0) {
+// 		// SRPLG_LOG_ERR(PLUGIN_NAME, "sd_bus_message_open_container() error");
+// 		goto invalid;
+// 	}
+
+    
+
+//     r = sd_bus_message_append(msg, "(sb)", dns_domain , search_type);
+// 		if (r < 0) {
+// 			//SRPLG_LOG_ERR(PLUGIN_NAME, "sd_bus_message_append() error");
+// 			goto invalid;
+// 		}
+//     r = sd_bus_message_close_container(msg);
+// 	if (r < 0) {
+// 		//SRPLG_LOG_ERR(PLUGIN_NAME, "sd_bus_message_close_container() error");
+// 		goto invalid;
+// 	}
+
+// 	r = sd_bus_call(bus, msg, 0, &sdb_err, &reply);
+// 	if (r < 0) {
+// 		//SRPLG_LOG_ERR(PLUGIN_NAME, "sd_bus_call() error");
+// 		goto invalid;
+// 	}
+
+// 	// SRP_LOG_INF("Set domains successfully!");
+// 	goto finish;
+
+// invalid:
+// 	//SRPLG_LOG_ERR(ietf::sys::PLUGIN_NAME, "sd-bus failure (%d): %s", r, sdb_err.message);
+// 	error = -1;
+
+// finish:
+// 	sd_bus_message_unref(msg);
+// 	sd_bus_flush_close_unref(bus);
+	
+//     #endif //SYSTEMD
+
+
+//     return error;
+return 0;
+}
 
 }// end of namespace
 

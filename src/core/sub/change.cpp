@@ -11,6 +11,8 @@
 // sethostname() and gethostname()
 #include <unistd.h>
 
+#include <core/system/dns.hpp>
+
 // logging
 #include <sysrepo.h>
 
@@ -100,7 +102,7 @@ namespace sub::change {
                     break;
                 case sysrepo::ChangeOperation::Moved:
                     break;
-                }
+                };
             }
             break;
         default:
@@ -313,6 +315,48 @@ namespace sub::change {
         std::optional<std::string_view> subXPath, sr::Event event, uint32_t requestId)
     {
         sr::ErrorCode error = sr::ErrorCode::Ok;
+        switch (event) {
+        case sysrepo::Event::Change:
+                for (auto& change : session.getChanges(subXPath->data()))
+            {
+                switch (change.operation) {
+                case sysrepo::ChangeOperation::Created:
+                case sysrepo::ChangeOperation::Modified: {
+
+                    // modified hostname - get current value and use sethostname()
+                    auto value = change.node.asTerm().value();
+                    auto domain = std::get<std::string>(value);
+
+                    sys::dns::DnsSearchServer server;
+                    server.setDomain(domain);
+
+
+
+                    //sys::dns::DnsSearchServerList::getInstance().addDnsSearchServer(server);
+
+
+                    SRPLG_LOG_ERR("Petar:", "%s", domain.c_str());
+
+                    // try {
+                    //     // sys::setTimezoneName(timezone_name);
+                    // } catch (const std::runtime_error& err) {
+                    //     // SRPLG_LOG_ERR(ietf::sys::PLUGIN_NAME, "%s", err.what());
+                    //     // error = sr::ErrorCode::OperationFailed;
+                    // }
+
+                    break;
+                }
+                case sysrepo::ChangeOperation::Deleted:
+                    break;
+                case sysrepo::ChangeOperation::Moved:
+                    break;
+                }
+            }
+            break;
+        default:
+            break;
+        }
+
         return error;
     }
 
@@ -342,6 +386,9 @@ namespace sub::change {
         std::optional<std::string_view> subXPath, sr::Event event, uint32_t requestId)
     {
         sr::ErrorCode error = sr::ErrorCode::Ok;
+
+        SRPLG_LOG_ERR("Petar", "DnsServerModuleChangeCb");
+
         return error;
     }
 

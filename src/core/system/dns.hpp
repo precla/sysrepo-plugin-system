@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include <optional>
+#include <stdexcept>
 
 namespace ietf::sys::dns {
 
@@ -207,6 +208,13 @@ class DnsSearchServerList {
         * @return true if are the same, false otherwise
         */
         bool compareDnsSearchServer(const DnsSearchServer& s1, const DnsSearchServer& s2);  
+
+         /**
+        * @brief Singleton class instance
+        * @return Reference to the only instance
+        */
+
+        static DnsSearchServerList& getInstance(); 
        
 
 };
@@ -258,6 +266,7 @@ class DnsServerList {
        
 
 };
+
 
 
 }
