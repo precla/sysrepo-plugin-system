@@ -26,14 +26,15 @@ find_package(LIBYANGCPP REQUIRED)
 find_package(SYSREPO REQUIRED)
 find_package(LIBYANG REQUIRED)
 find_package(UMGMT REQUIRED)
-find_package(SYSTEMD)
+find_package(LIBSYSTEMD REQUIRED)
+find_package(LIBSDBUSCPP REQUIRED)
 
 include_directories(
     ${SYSREPOCPP_INCLUDE_DIRS}
     ${LIBYANGCPP_INCLUDE_DIRS}
     ${UMGMT_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/src
-    ${SDBUS_CPP_INCLUDE_DIRS}
+    ${SDBUSCPP_INCLUDE_DIRS}
 )
 
 set(
@@ -127,7 +128,7 @@ target_link_libraries(
     ${SYSREPOCPP_LIBRARIES}
     ${LIBYANGCPP_LIBRARIES}
     ${UMGMT_LIBRARIES}
-    ${SYSTEMDCPP_LIBRARIES}
+    ${SDBUSCPP_LIBRARIES}
 )
 
 # plugin as a library
@@ -146,5 +147,4 @@ target_link_libraries(
     ${SYSREPOCPP_LIBRARIES}
     ${LIBYANGCPP_LIBRARIES}
     ${UMGMT_LIBRARIES}
-    ${SYSTEMDCPP_LIBRARIES}
 )
